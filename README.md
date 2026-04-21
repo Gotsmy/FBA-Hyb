@@ -53,12 +53,6 @@ conda env create -f env_cuda_jax.yml  # CUDA
 conda activate jax
 ```
 
-Symbolic regression (used by the `*_generate_ANN_data.ipynb` notebooks) requires a separate environment, [env_pysr.yml](env_pysr.yml):
-
-```bash
-conda env create -f env_pysr.yml
-```
-
 Run the two case-study training scripts from the repository root:
 
 ```bash
