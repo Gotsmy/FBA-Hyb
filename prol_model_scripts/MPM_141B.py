@@ -1,9 +1,10 @@
-#!/home/mgotsmy/anaconda3/envs/jax/bin/python
 
 import os
 os.environ['JAX_PLATFORMS'] = 'cpu'
 import sys
-sys.path.append("/mnt/y/code/250513_metabolic_process_models")
+from pathlib import Path
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
 
 import pandas as pd
 import numpy as np
@@ -758,16 +759,16 @@ def get_model_config(verbose=True):
     return scalers, ALL_kwargs
 
 def get_exp_dfs():
-    exp_onl = pd.read_csv("./prol_process_data/250804_exp_onl.csv",index_col=0)
-    exp_off = pd.read_csv("./prol_process_data/250804_exp_off.csv",index_col=0)
-    exp_dsp = pd.read_csv("./prol_process_data/250804_exp_dsp.csv",index_col=0)
+    exp_onl = pd.read_csv(str(REPO_ROOT / "prol_process_data" / "250804_exp_onl.csv"),index_col=0)
+    exp_off = pd.read_csv(str(REPO_ROOT / "prol_process_data" / "250804_exp_off.csv"),index_col=0)
+    exp_dsp = pd.read_csv(str(REPO_ROOT / "prol_process_data" / "250804_exp_dsp.csv"),index_col=0)
 
     return exp_off,exp_onl,exp_dsp
 
 def get_aug_dfs():
-    aug_onl = pd.read_csv("./prol_process_data/250813_aug_onl.csv",index_col=0)
-    aug_off = pd.read_csv("./prol_process_data/250813_aug_off.csv",index_col=0)
-    aug_dsp = pd.read_csv("./prol_process_data/250813_aug_dsp.csv",index_col=0)
+    aug_onl = pd.read_csv(str(REPO_ROOT / "prol_process_data" / "250813_aug_onl.csv"),index_col=0)
+    aug_off = pd.read_csv(str(REPO_ROOT / "prol_process_data" / "250813_aug_off.csv"),index_col=0)
+    aug_dsp = pd.read_csv(str(REPO_ROOT / "prol_process_data" / "250813_aug_dsp.csv"),index_col=0)
 
     return aug_off,aug_onl,aug_dsp
 
@@ -809,7 +810,7 @@ if __name__ == "__main__":
     cross_valid_sets = HF.get_valid_sets()
 
     # generate path and dir
-    save_path = "/mnt/y/code/250513_metabolic_process_models/prol_model_data/"+__file__.split("/")[-1].replace(".py","")+"/"
+    save_path = str(REPO_ROOT / "prol_model_data" / Path(__file__).stem) + "/"
     os.makedirs(save_path,exist_ok=True)
 
     # load data

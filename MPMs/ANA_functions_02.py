@@ -1,3 +1,4 @@
+from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
@@ -8,6 +9,8 @@ import os
 
 import MPMs.UTIL_functions_01 as UF
 import MPMs.DATA_functions_01 as DF
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 import importlib
 importlib.reload(UF)
@@ -123,9 +126,9 @@ def compare_versions(versions,only_last_time_point=False,last=True,equal_compari
 
 def load_metrics(version,id=""):
     # check if OptFed or SLIM path
-    filepath = f"/mnt/y/code/250513_metabolic_process_models/prol_model_data/{version}/analysis{id}.pkl"
+    filepath = str(REPO_ROOT / "prol_model_data" / version / f"analysis{id}.pkl")
     if not os.path.isfile(filepath):
-        filepath = f"/mnt/y/code/250513_metabolic_process_models/slim_model_data/{version}/analysis{id}.pkl"
+        filepath = str(REPO_ROOT / "slim_model_data" / version / f"analysis{id}.pkl")
 
     with open(filepath,"rb") as file:
         analysis = pickle.load(file)

@@ -1,7 +1,9 @@
 import os
 os.environ['JAX_PLATFORMS'] = 'cpu'
 import sys
-sys.path.append("/mnt/y/code/250513_metabolic_process_models")
+from pathlib import Path
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
 
 import numpy as np
 import pandas as pd
@@ -26,7 +28,7 @@ def get_columns_inp_out():
     return COL_inp, COL_out
 
 def get_FBA_data(col_inp, col_out):
-    FBAdata = pd.read_csv("/mnt/y/code/250513_metabolic_process_models/slim_fba_data/01_obj_fba_data_reduced.csv",index_col=0)
+    FBAdata = pd.read_csv(str(REPO_ROOT / "slim_fba_data" / "01_obj_fba_data_reduced.csv"),index_col=0)
     FBAdata = FBAdata.iloc[:,:]
     
     # remove combined objective fluxes
@@ -88,7 +90,7 @@ if __name__ == "__main__":
                 niterations=1000,
                 populations=200,
                 population_size=200,
-                output_directory="/mnt/y/code/250513_metabolic_process_models/slim_fba_data/sr_models",
+                output_directory=str(REPO_ROOT / "slim_fba_data" / "sr_models"),
                 run_id=__file__.split("/")[-1].strip(".py"),
                 # constraints={"*":(-1,1)}, # was commented in
                 # complexity_of_variables=2, # was commented in

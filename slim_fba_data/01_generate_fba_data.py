@@ -1,11 +1,12 @@
-# !/home/mgotsmy/anaconda3/envs/pysr/bin/python
-
+from pathlib import Path
 import cobra
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from scipy.stats import qmc
 import snek
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 def build_model(qG, nr_X, nr_P, nr_M, tmp_model):
     nr_X, nr_P, nr_M = normizer(nr_X, nr_P, nr_M)
@@ -25,7 +26,7 @@ def build_model(qG, nr_X, nr_P, nr_M, tmp_model):
 
 def load_model():
     # load model
-    model = cobra.io.read_sbml_model("/mnt/y/code/250513_metabolic_process_models/slim_fba_data/iML1515_pDNA.xml")
+    model = cobra.io.read_sbml_model(str(REPO_ROOT / "slim_fba_data" / "iML1515_pDNA.xml"))
     model.solver = "cplex"
 
 
@@ -79,5 +80,5 @@ if __name__ == "__main__":
         df = pd.DataFrame(fba_list,columns=["qG","nr_X","nr_P","nr_M"]+[r.id for r in tmp.reactions])
 
     print("saving dataframes")
-    df.to_csv("/mnt/y/code/250513_metabolic_process_models/slim_fba_data//250813_obj_fba_01.csv")
+    df.to_csv(str(REPO_ROOT / "slim_fba_data" / "250813_obj_fba_01.csv"))
     print("done")

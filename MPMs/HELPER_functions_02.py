@@ -1,3 +1,4 @@
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import jax.numpy as jnp
@@ -8,6 +9,8 @@ import MPMs.DATA_functions_01 as DF
 import MPMs.UTIL_functions_01 as UF
 import MPMs.ANA_functions_02 as AF
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
 # --- HELPER FUNCTIONS --- #
 
 def get_process_scalers(method):
@@ -17,16 +20,16 @@ def get_process_scalers(method):
         COL_onl = ["t","T","Cf_N","G_Cf"]
         SCL_off = DF.SCL_standard(jnp.zeros((1,4)),COL_off)
         SCL_onl = DF.SCL_standard(jnp.zeros((1,4)),COL_onl)
-        SCL_off = eqx.tree_deserialise_leaves("/mnt/y/code/250513_metabolic_process_models/prol_process_data/250804_exp.off_scl.standard.eqx", SCL_off)
-        SCL_onl = eqx.tree_deserialise_leaves("/mnt/y/code/250513_metabolic_process_models/prol_process_data/250804_exp.onl_scl.standard.eqx", SCL_onl)
+        SCL_off = eqx.tree_deserialise_leaves(str(REPO_ROOT / "prol_process_data" / "250804_exp.off_scl.standard.eqx"), SCL_off)
+        SCL_onl = eqx.tree_deserialise_leaves(str(REPO_ROOT / "prol_process_data" / "250804_exp.onl_scl.standard.eqx"), SCL_onl)
         return SCL_off, SCL_onl
     elif method == "mean":
         COL_off = ["G","P","X","V_N"]
         COL_onl = ["t","T","Cf_N","G_Cf"]
         SCL_off = DF.SCL_mean(jnp.zeros((1,4)),COL_off)
         SCL_onl = DF.SCL_mean(jnp.zeros((1,4)),COL_onl)
-        SCL_off = eqx.tree_deserialise_leaves("/mnt/y/code/250513_metabolic_process_models/prol_process_data/250804_exp.off_scl.mean.eqx", SCL_off)
-        SCL_onl = eqx.tree_deserialise_leaves("/mnt/y/code/250513_metabolic_process_models/prol_process_data/250804_exp.onl_scl.mean.eqx", SCL_onl)
+        SCL_off = eqx.tree_deserialise_leaves(str(REPO_ROOT / "prol_process_data" / "250804_exp.off_scl.mean.eqx"), SCL_off)
+        SCL_onl = eqx.tree_deserialise_leaves(str(REPO_ROOT / "prol_process_data" / "250804_exp.onl_scl.mean.eqx"), SCL_onl)
         return SCL_off, SCL_onl
     else:
         raise NotImplementedError(f"Unknown method: {method}")
@@ -39,16 +42,16 @@ def SLIM_get_process_scalers(method):
         COL_onl = ["t","Cf_N","G_Cf"]
         SCL_off = DF.SCL_standard(jnp.zeros((1,4)),COL_off)
         SCL_onl = DF.SCL_standard(jnp.zeros((1,3)),COL_onl)
-        SCL_off = eqx.tree_deserialise_leaves("slim_process_data/exp.off_scl.standard.eqx", SCL_off)
-        SCL_onl = eqx.tree_deserialise_leaves("slim_process_data/exp.onl_scl.standard.eqx", SCL_onl)
+        SCL_off = eqx.tree_deserialise_leaves(str(REPO_ROOT / "slim_process_data" / "exp.off_scl.standard.eqx"), SCL_off)
+        SCL_onl = eqx.tree_deserialise_leaves(str(REPO_ROOT / "slim_process_data" / "exp.onl_scl.standard.eqx"), SCL_onl)
         return SCL_off, SCL_onl
     elif method == "mean":
         COL_off = ["G","P","X","V_N"]
         COL_onl = ["t","Cf_N","G_Cf"]
         SCL_off = DF.SCL_mean(jnp.zeros((1,4)),COL_off)
         SCL_onl = DF.SCL_mean(jnp.zeros((1,3)),COL_onl)
-        SCL_off = eqx.tree_deserialise_leaves("slim_process_data/exp.off_scl.mean.eqx", SCL_off)
-        SCL_onl = eqx.tree_deserialise_leaves("slim_process_data/exp.onl_scl.mean.eqx", SCL_onl)
+        SCL_off = eqx.tree_deserialise_leaves(str(REPO_ROOT / "slim_process_data" / "exp.off_scl.mean.eqx"), SCL_off)
+        SCL_onl = eqx.tree_deserialise_leaves(str(REPO_ROOT / "slim_process_data" / "exp.onl_scl.mean.eqx"), SCL_onl)
 
         # The concentration of G is always 0. therefore I have to replace the 0 in the avg with some reasonable value.
         # For now I think it's ok to hardcode it, but:
@@ -218,11 +221,11 @@ def PYSR_model_loader(mpm_version,
     import pysr
     
     if dataset_name == "optfed":
-        data_base_path = "/mnt/y/code/250513_metabolic_process_models/prol_model_data/"
-        script_base_path = "/mnt/y/code/250513_metabolic_process_models/prol_model_scripts/"
+        data_base_path = str(REPO_ROOT / "prol_model_data") + "/"
+        script_base_path = str(REPO_ROOT / "prol_model_scripts") + "/"
     elif dataset_name == "slim":
-        data_base_path = "/mnt/y/code/250513_metabolic_process_models/slim_model_data/"
-        script_base_path = "/mnt/y/code/250513_metabolic_process_models/slim_model_scripts/"
+        data_base_path = str(REPO_ROOT / "slim_model_data") + "/"
+        script_base_path = str(REPO_ROOT / "slim_model_scripts") + "/"
     else:
         raise NotImplementedError(f"Unknown dataset: {dataset_name}")
     

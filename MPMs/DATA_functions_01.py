@@ -1,3 +1,4 @@
+from pathlib import Path
 import jax
 import jax.numpy as jnp
 import equinox as eqx
@@ -7,6 +8,8 @@ import pickle
 
 import MPMs.MPM_functions_07 as MF
 import MPMs.UTIL_functions_01 as UF
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 # ----------------- SCALERS ----------------- #
@@ -366,7 +369,7 @@ class SCL_logp1(eqx.Module):
         return self
 
 def SCL_init_from_fba(reactions,method):
-    scaling_data = pd.read_csv("/mnt/y/code/250513_metabolic_process_models/prol_process_data/fba_avg_std.csv",index_col=0)
+    scaling_data = pd.read_csv(str(REPO_ROOT / "prol_process_data" / "fba_avg_std.csv"),index_col=0)
     v = scaling_data.loc[:,reactions].values
     v = jnp.asarray(v)
     reactions = [str(_) for _ in reactions]
@@ -381,7 +384,7 @@ def SCL_init_from_fba(reactions,method):
         raise NotImplementedError
     
 def SCL_init_from_slim_fba(reactions,method):
-    scaling_data = pd.read_csv("/mnt/y/code/250513_metabolic_process_models/slim_fba_data/fba_avg_std_01_reduced.csv",index_col=0)
+    scaling_data = pd.read_csv(str(REPO_ROOT / "slim_fba_data" / "fba_avg_std_01_reduced.csv"),index_col=0)
     v = scaling_data.loc[:,reactions].values
     v = jnp.asarray(v)
     reactions = [str(_) for _ in reactions]
