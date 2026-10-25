@@ -47,9 +47,7 @@ The two case studies are differentiated by two abbreviations: `PROL` for the pro
 Install the conda environment from [env_cpu_jax.yml](env_cpu_jax.yml) (CPU only) or [env_cuda_jax.yml](env_cuda_jax.yml) (CUDA):
 
 ```bash
-conda env create -f env_cpu_jax.yml   # CPU
-# or
-conda env create -f env_cuda_jax.yml  # CUDA
+conda env create -f env_cpu_jax.yml
 conda activate jax
 ```
 
